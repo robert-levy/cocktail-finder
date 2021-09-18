@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useReducer, useMemo } from 'react';
+import NavigationBar from './components/NavigationBar/NavigationBar';
+import Letters from './components/Letters/Letters';
+import SearchBar from './components/SearchBar/SearchBar';
+import Cocktails from './components/Cocktails/Cocktails';
+import asyncReducer, {initialState} from './state/reducer'
+import { Container, Row } from 'react-bootstrap';
 
-function App() {
+const App = () => {
+
+  const [state, dispatch] = useReducer(asyncReducer, initialState)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <NavigationBar />
+      <Container>
+        <Row>
+          <Letters dispatch={dispatch} />
+        </Row>
+        <Row className="justify-content-center">
+          <SearchBar />
+        </Row>
+        <Row>
+          <Cocktails />
+        </Row>
+      </Container>
+    </div >
   );
 }
 
