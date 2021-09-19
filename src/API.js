@@ -15,7 +15,7 @@ export async function fetchDrinksByLetter(letter) {
     }
 }
 
-export async function getRandom() {
+export async function fetchRandomDrink() {
     try {
         const response = await fetch(`${ENDPOINTS.random}`)
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)

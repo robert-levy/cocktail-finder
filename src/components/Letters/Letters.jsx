@@ -7,7 +7,7 @@ const Letter = ({ letter, dispatch }) => {
             <Button
                 variant="warning"
                 className="ms-2 me-2"
-                onClick={() => dispatch({ type: 'letterSearch' }, { payload:letter })}
+                onClick={() => dispatch({ type: 'letterSearch', payload: letter })}
             >
                 {letter}
             </Button>

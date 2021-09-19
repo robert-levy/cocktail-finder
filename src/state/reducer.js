@@ -1,36 +1,67 @@
-import { fetchDrinksByLetter } from "../API"
+import { fetchDrinksByLetter, fetchRandomDrink } from "../API"
 
 export const initialState = {
-    drinks: {
-    }
+    cocktails: {
+        searched: {},
+        favourites: [],
+        randomCocktail: {}
+    },
+    selectedLetter: undefined
 }
 
-export const reducer = (state, { type, payload }) => {
-    switch (type) {
-
+export const reducer = (state, action) => {
+    let newState = {}
+    switch (action.type) {
         case "letterSearch":
-            return { ...state, ...payload }
+            const letter = action.payload.letter
+            newState[letter] = {
+                ...action.payload.drinks.drinks
+            }
+            return {
+                ...state,
+                cocktails: {
+                    ...state.cocktails,
+                    searched: {
+                        ...state.cocktails.searched,
+                        ...newState
+                    }
+                },
+                selectedLetter: letter
+            }
 
+        case "randomSearch":
+            return {
+                ...state,
+                cocktails: {
+                    ...state.cocktails,
+                    randomCocktail: action.payload.drinks[0]
+                }
+            }
         default:
             return state
     }
 }
 
-export const asyncReducer = async dispatch => {
-    let payload = {}
-    return async action => {
-        switch (action.type) {
+export const asyncReducer = dispatch => {
+    return async ({ type, payload }) => {
+        switch (type) {
             case "letterSearch":
-                console.log('in async reducer')
-                payload = await fetchDrinksByLetter()
-                dispatch({ type: 'letterSearch' }, { payload })
-                break;
+                const drinks = await fetchDrinksByLetter(payload) //payload here is the letter 
+                payload = { drinks, letter: payload }
+                dispatch({ type, payload })
+                break
+
+            case "randomSearch":
+                const drink = await fetchRandomDrink()
+                payload = drink
+                dispatch({ type, payload })
+                break
 
             default:
-                console.log('default case in async reducer')
-                break;
+                console.log(`default case in async reducer, case is ${type}`)
+                break
         }
     }
 }
 
-export default asyncReducer(reducer)
+// export default asyncReducer(reducer)
