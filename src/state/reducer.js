@@ -29,6 +29,12 @@ export const reducer = (state, action) => {
                 selectedLetter: letter
             }
 
+        case "changeSelectedLetter":
+            return {
+                ...state, 
+                selectedLetter: action.payload
+            }
+
         case "randomSearch":
             return {
                 ...state,
@@ -46,7 +52,7 @@ export const asyncReducer = dispatch => {
     return async ({ type, payload }) => {
         switch (type) {
             case "letterSearch":
-                const drinks = await fetchDrinksByLetter(payload) //payload here is the letter 
+                const drinks = await fetchDrinksByLetter(payload)
                 payload = { drinks, letter: payload }
                 dispatch({ type, payload })
                 break
@@ -55,6 +61,10 @@ export const asyncReducer = dispatch => {
                 const drink = await fetchRandomDrink()
                 payload = drink
                 dispatch({ type, payload })
+                break
+
+            case "changeSelectedLetter":
+                dispatch({type, payload})
                 break
 
             default:

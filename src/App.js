@@ -5,6 +5,7 @@ import SearchBar from './components/SearchBar/SearchBar';
 import Cocktails from './components/Cocktails/Cocktails';
 import { asyncReducer, reducer, initialState } from './state/reducer'
 import { Container, Row } from 'react-bootstrap';
+import './App.css'
 
 const App = () => {
 
@@ -15,10 +16,10 @@ const App = () => {
       <NavigationBar />
       <Container>
         <Row>
-          <Letters dispatch={asyncReducer(dispatch)} />
+          <Letters state={state} dispatch={asyncReducer(dispatch)} />
         </Row>
         <Row className="justify-content-center">
-          <SearchBar dispatch={asyncReducer(dispatch)}/>
+          <SearchBar state={state} dispatch={asyncReducer(dispatch)}/>
         </Row>
         <Row>
           <Cocktails state={state}/>
