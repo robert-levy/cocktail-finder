@@ -1,10 +1,9 @@
 export const getCocktailIngredients = (cocktail) => {
     let ingredients = ""
-    //TODO: Convert to foreach
     Object.entries(cocktail).map(entry => {
-        if (entry[0].startsWith('strIngredient') && entry[1]) ingredients += `${entry[1]}, ` 
+        if (entry[0].startsWith('strIngredient')) ingredients += `${entry[1]}, `
     })
-    return ingredients.slice(0, -2) //remove whitespace and comma
+    return ingredients.slice(0, -2)
 }
 
 export const getCocktails = (state) => {
@@ -13,11 +12,17 @@ export const getCocktails = (state) => {
     return cocktails
 }
 
-export const containsCocktailData = (state, letter) => state.cocktails.searched[letter] 
+export const containsCocktailData = (state, letter) => state.cocktails.searched[letter]
 
 export const checkIsFavourite = (state, cocktail) => (state.cocktails.favourites).includes(cocktail)
 
-export const addFavouriteProperty = (cocktails) => cocktails.forEach(cocktail => cocktail['favourite'] = false)
+export const preProcessData = (cocktails) => {
+    if(cocktails === null) return [] //should display <NotFound/>
+    cocktails.forEach(cocktail => {
+        Object.keys(cocktail).forEach(key => cocktail[key] === null && delete cocktail[key])
+        cocktail['favourite'] = false
+    })
+}
 
 
 
