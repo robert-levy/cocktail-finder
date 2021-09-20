@@ -1,4 +1,4 @@
-import { useReducer, useMemo } from 'react';
+import { useReducer } from 'react';
 import NavigationBar from './components/NavigationBar/NavigationBar';
 import Letters from './components/Letters/Letters';
 import SearchBar from './components/SearchBar/SearchBar';
@@ -22,7 +22,7 @@ const App = () => {
           <SearchBar state={state} dispatch={asyncReducer(dispatch)}/>
         </Row>
         <Row>
-          <Cocktails state={state}/>
+          <Cocktails state={state} dispatch={dispatch}/>
         </Row>
       </Container>
     </div >

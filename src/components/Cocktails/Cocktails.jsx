@@ -29,23 +29,28 @@ const cocktails = {
     ]
 }
 
-const Cocktail = ({ name, thumbnail, ingredients, instructions }) => {
+const Cocktail = ({ cocktail, ingredients, dispatch }) => {
     const [modalShow, setModalShow] = useState(false)
-    const [favourited, setFavourited] = useState(false)
+    const [favourite, setFavourite] = useState(cocktail.favourite)
+
+    const handleFavouriteClick = () => {
+        dispatch({ type: 'favouriteToggle', payload: cocktail })
+        setFavourite(!favourite)
+    }
 
     return (
         <>
             <Card className="m-4" style={{ height: 200, flexDirection: 'row', width: '500px' }}>
-                <Card.Img variant="top" src={thumbnail} style={{ width: 200 }} />
+                <Card.Img variant="top" src={cocktail.strDrinkThumb} style={{ width: 200 }} />
                 <Card.Body className="d-flex flex-column justify-content-between">
-                    <Card.Title>{name}</Card.Title>
+                    <Card.Title>{cocktail.strDrink}</Card.Title>
                     <Card.Text>
                         {ingredients}
                     </Card.Text>
                     <div className="d-flex justify-content-between">
                         <Button onClick={() => setModalShow(true)} variant="warning">More info</Button>
-                        <Button variant="none" onClick={() => setFavourited(!favourited)}>
-                            {favourited ? <StarFill size={30} color="gold" />
+                        <Button variant="none" onClick={handleFavouriteClick}>
+                            {favourite ? <StarFill size={30} color="gold" />
                                 :
                                 <Star size={30} color="gold" />
                             }
@@ -53,28 +58,30 @@ const Cocktail = ({ name, thumbnail, ingredients, instructions }) => {
                     </div>
                 </Card.Body>
             </Card>
-            <CocktailModal
-                size="lg"
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                name={name}
-                ingredients={ingredients}
-                thumbnail={thumbnail}
-                instructions={instructions}
-            />
+            {modalShow &&
+                <CocktailModal
+                    size="lg"
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                    cocktail={cocktail}
+                    ingredients={ingredients}
+                    dispatch={dispatch}
+                    favourite={favourite}
+                    setFavourite={setFavourite}
+                />
+            }
         </>
     )
 }
 
-const Cocktails = ({ state }) => {
+const Cocktails = ({ state, dispatch }) => {
 
     const mapCocktails = () => getCocktails(state).map((cocktail, index) => {
         const ingredients = getCocktailIngredients(cocktail)
         return <Cocktail
-            name={cocktail.strDrink}
-            thumbnail={cocktail.strDrinkThumb}
+            cocktail={cocktail}
             ingredients={ingredients}
-            instructions={cocktail.strInstructions}
+            dispatch={dispatch}
             key={index}
         />
     })

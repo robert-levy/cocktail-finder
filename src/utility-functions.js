@@ -13,5 +13,11 @@ export const getCocktails = (state) => {
     return cocktails
 }
 
-export const containsCocktailData = (state, letter) => state.cocktails.searched[letter]
+export const containsCocktailData = (state, letter) => state.cocktails.searched[letter] 
+
+export const checkIsFavourite = (state, cocktail) => (state.cocktails.favourites).includes(cocktail)
+
+export const addFavouriteProperty = (cocktails) => cocktails.forEach(cocktail => cocktail['favourite'] = false)
+
+
 

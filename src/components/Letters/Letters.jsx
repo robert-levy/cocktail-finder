@@ -7,7 +7,7 @@ const Letter = ({ state, letter, dispatch }) => {
     // Only makes API call if data is not already in state
     const handleClick = () => {
         containsCocktailData(state, letter) ?
-            dispatch({ type: 'changeSelectedLetter', payload: letter })
+            dispatch({ type: 'changeSelectedLetter', payload: letter }) //could use just dispatch here instead of async and dispatch
             : dispatch({ type: 'letterSearch', payload: letter })
     }
 

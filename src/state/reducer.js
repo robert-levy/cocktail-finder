@@ -1,4 +1,5 @@
 import { fetchDrinksByLetter, fetchRandomDrink } from "../API"
+import { checkIsFavourite, addFavouriteProperty } from "../utility-functions"
 
 export const initialState = {
     cocktails: {
@@ -9,13 +10,13 @@ export const initialState = {
     selectedLetter: undefined
 }
 
-export const reducer = (state, action) => {
+export const reducer = (state, { type, payload }) => {
     let newState = {}
-    switch (action.type) {
+    switch (type) {
         case "letterSearch":
-            const letter = action.payload.letter
-            newState[letter] = {
-                ...action.payload.drinks.drinks
+            addFavouriteProperty(payload.drinks.drinks) //breaks when clicking on letter with no drinks
+            newState[payload.letter] = {
+                ...payload.drinks.drinks
             }
             return {
                 ...state,
@@ -26,21 +27,50 @@ export const reducer = (state, action) => {
                         ...newState
                     }
                 },
-                selectedLetter: letter
+                selectedLetter: payload.letter
             }
 
         case "changeSelectedLetter":
             return {
-                ...state, 
-                selectedLetter: action.payload
+                ...state,
+                selectedLetter: payload
             }
 
         case "randomSearch":
+            addFavouriteProperty(payload.drinks)
             return {
                 ...state,
                 cocktails: {
                     ...state.cocktails,
-                    randomCocktail: action.payload.drinks[0]
+                    randomCocktail: payload.drinks[0]
+                }
+            }
+
+        case "favouriteToggle":
+            const isFavourite = checkIsFavourite(state, payload)
+            if (isFavourite) {
+                const newFavourites = (state.cocktails.favourites).filter(cocktail => cocktail !== payload)
+                payload.favourite = false
+                return {
+                    ...state,
+                    cocktails: {
+                        ...state.cocktails,
+                        favourites: newFavourites
+                    }
+                }
+            }
+            else {
+                console.log(payload)
+                payload.favourite = true
+                return {
+                    ...state,
+                    cocktails: {
+                        ...state.cocktails,
+                        favourites: [
+                            ...state.cocktails.favourites,
+                            payload
+                        ],
+                    }
                 }
             }
         default:
@@ -58,13 +88,16 @@ export const asyncReducer = dispatch => {
                 break
 
             case "randomSearch":
-                const drink = await fetchRandomDrink()
+                const drink = await fetchRandomDrink() //sometimes this returns undefined
                 payload = drink
                 dispatch({ type, payload })
                 break
 
             case "changeSelectedLetter":
-                dispatch({type, payload})
+                dispatch({ type, payload })
+                break
+            case "favouriteToggle":
+                dispatch({type,payload})
                 break
 
             default:

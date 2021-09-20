@@ -5,13 +5,14 @@ import { getCocktailIngredients } from '../../utility-functions'
 
 const SearchBar = ({ state, dispatch }) => {
     const [modalShow, setModalShow] = useState(false)
-    const [favourited, setFavourited] = useState(false)
+    const [favourite, setFavourite] = useState(state.cocktails.randomCocktail.favourite)
 
     const handleRandomSearchClick = () => {
         dispatch({ type: 'randomSearch' })
+        // need to set timer for state to update and to stop flickering data
         setTimeout(() => {
             setModalShow(true)
-        }, 100);
+        }, 1000);
     }
 
     return (
@@ -29,15 +30,16 @@ const SearchBar = ({ state, dispatch }) => {
                     aria-describedby="inputGroup-sizing-default"
                 />
             </InputGroup>
-            { modalShow && 
+            {modalShow &&
                 <CocktailModal
                     size="lg"
                     show={modalShow}
                     onHide={() => setModalShow(false)}
-                    name={state.cocktails.randomCocktail.strDrink}
+                    cocktail={state.cocktails.randomCocktail}
                     ingredients={getCocktailIngredients(state.cocktails.randomCocktail)}
-                    thumbnail={state.cocktails.randomCocktail.strDrinkThumb}
-                    instructions={state.cocktails.randomCocktail.strInstructions}
+                    dispatch={dispatch}
+                    favourite={favourite}
+                    setFavourite={setFavourite}
                 />
             }
         </>
