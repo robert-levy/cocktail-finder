@@ -7,7 +7,8 @@ export const initialState = {
         favourites: [],
         randomCocktail: {}
     },
-    selectedLetter: undefined
+    selectedLetter: undefined,
+    searchTerm: ""
 }
 
 export const reducer = (state, { type, payload }) => {
@@ -60,6 +61,13 @@ export const reducer = (state, { type, payload }) => {
                     favourites: newFavourites
                 }
             }
+
+        case "newSearchTerm":
+            return {
+                ...state,
+                searchTerm: payload
+            }
+
         default:
             return state
     }

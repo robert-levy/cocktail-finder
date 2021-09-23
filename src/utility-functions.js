@@ -26,3 +26,7 @@ export const preProcessData = (cocktails) => {
     cocktails.forEach(cocktail => Object.keys(cocktail).forEach(key => !cocktail[key] && delete cocktail[key]))
     return cocktails
 }
+
+export const filterCocktails = (cocktails, searchTerm) => {
+    return cocktails.filter(cocktail => cocktail.strDrink.toLowerCase().includes(searchTerm.toLowerCase()))
+}

@@ -6,8 +6,9 @@ import { useCocktailDispatch, useCocktailState } from '../state-provider/Provide
 
 const SearchBar = () => {
     const state = useCocktailState()
-    const { asyncReducer } = useCocktailDispatch()
+    const { asyncReducer, dispatch } = useCocktailDispatch()
     const [modalShow, setModalShow] = useState(false)
+    const [searchTerm, setSearchTerm] = useState(state.searchTerm)
 
     const handleRandomSearchClick = () => {
         asyncReducer({ type: 'randomSearch' })
@@ -16,6 +17,11 @@ const SearchBar = () => {
         setTimeout(() => {  // need to load until new random cocktail is properly in state, the favourite is displaying incorrect when it I see the cocktail switch
             setModalShow(true)
         }, 1500)
+    }
+
+    const handleSearchTermChange = (e) => {
+        dispatch({type:'newSearchTerm', payload:e.target.value})
+        setSearchTerm(e.target.value)
     }
 
     return (
@@ -31,6 +37,10 @@ const SearchBar = () => {
                 <FormControl
                     aria-label="Default"
                     aria-describedby="inputGroup-sizing-default"
+                    placeholder="🍹...🍸...🥴"
+                    value={searchTerm}
+                    onChange={(e) =>handleSearchTermChange(e)}
+
                 />
             </InputGroup>
             {modalShow &&
