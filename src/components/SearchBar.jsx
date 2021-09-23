@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { InputGroup, FormControl, Button } from 'react-bootstrap'
 import CocktailModal from './CocktailModal'
-import { getCocktailIngredients, checkIsFavourite } from '../utility-functions'
+import { getCocktailIngredients } from '../utility-functions'
 import { useCocktailDispatch, useCocktailState } from '../state-provider/Provider'
 
 const SearchBar = () => {
@@ -13,7 +13,7 @@ const SearchBar = () => {
         asyncReducer({ type: 'randomSearch' })
 
         // need to set timer for state to update and to stop flickering data
-        setTimeout(() => {  // need to load until new random cocktail is properly in state, the favourite is displaying incorrect when it I see the cocktail change
+        setTimeout(() => {  // need to load until new random cocktail is properly in state, the favourite is displaying incorrect when it I see the cocktail switch
             setModalShow(true)
         }, 1500)
     }

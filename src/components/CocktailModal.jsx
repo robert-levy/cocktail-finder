@@ -17,7 +17,7 @@ const CocktailModal = ({ cocktail,ingredients, onHide, size, show }) => {
     React.useEffect(() => {
         const isFavourite = checkIsFavourite(state.cocktails.favourites, cocktail) 
         setFavourite(isFavourite)
-    }, [])
+    }, [cocktail, state.cocktails.favourites])
     
     return (
         <Modal onHide={onHide} size={size} show={show} aria-labelledby="contained-modal-title-vcenter">

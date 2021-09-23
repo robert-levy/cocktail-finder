@@ -29,11 +29,7 @@ const Letter = ({ letter }) => {
 
     return (
         <h3>
-            <Button
-                variant="warning"
-                className="ms-2 me-2"
-                onClick={handleClick}
-            >
+            <Button variant="warning" className="ms-2 me-2" onClick={handleClick} >
                 {letter}
             </Button>
         </h3>

@@ -5,14 +5,27 @@ import CocktailModal from './CocktailModal'
 import { getCocktailIngredients, getCocktails, checkIsFavourite } from '../utility-functions'
 import { useCocktailDispatch, useCocktailState } from '../state-provider/Provider'
 
-const Cocktail = ({ cocktail, ingredients, isFavourite }) => {
+const Cocktail = ({ cocktail }) => {
     const { dispatch } = useCocktailDispatch()
+    const state = useCocktailState()
     const [modalShow, setModalShow] = useState(false)
-    const [favourite, setFavourite] = useState(isFavourite);
+    const [favourite, setFavourite] = useState(false);
+    const [ingredients, setIngredients] = useState('');
 
-    const handleFavouriteClick = () => dispatch({ type: 'favouriteToggle', payload: cocktail }) && setFavourite(!favourite)
-    
-    React.useEffect(() => setFavourite(isFavourite), [isFavourite]) // Fixes weird bug
+    const handleFavouriteClick = () => {
+        dispatch({ type: 'favouriteToggle', payload: cocktail })
+        setFavourite(!favourite)
+    }
+
+    React.useEffect(() => {
+        const isFavourite = checkIsFavourite(state.cocktails.favourites, cocktail)
+        setFavourite(isFavourite)
+    }, [state.cocktails.favourites, state.selectedLetter, cocktail])
+
+    React.useEffect(() => {
+        const ingredients = getCocktailIngredients(cocktail)
+        setIngredients(ingredients)
+    }, [state.selectedLetter, cocktail])
 
     return (
         <>
@@ -50,27 +63,17 @@ const Cocktail = ({ cocktail, ingredients, isFavourite }) => {
 const Cocktails = () => {
 
     const state = useCocktailState()
-
-    const mapCocktails = () => getCocktails(state).map((cocktail, index) => {
-        const ingredients = getCocktailIngredients(cocktail)
-        const isFavourite = checkIsFavourite(state.cocktails.favourites, cocktail)
-        return <Cocktail
-            cocktail={cocktail}
-            ingredients={ingredients}
-            key={index}
-            isFavourite={isFavourite}
-        />
-    })
+    const cocktails = getCocktails(state.cocktails.searched, state.selectedLetter).map((cocktail, index) => <Cocktail cocktail={cocktail} key={index} />)
 
     return (
         <div className="d-flex flex-wrap justify-content-around bg-light ">
             {!state.selectedLetter && <div><h5>Select a letter to search for cocktails</h5></div>}
-            {state.selectedLetter && mapCocktails().length === 0 && <div><h5>Could not find any cocktails starting with {state.selectedLetter}</h5></div>}
-            {state.selectedLetter && mapCocktails().length !== 0 && mapCocktails()}
-            {/* {state.selectedLetter && mapCocktails()} */}
+            {state.selectedLetter && cocktails.length === 0 && <div><h5>Could not find any cocktails starting with {state.selectedLetter}</h5></div>}
+            {
+                cocktails.map(cocktail => cocktail)
+            }
 
         </div>
     )
 }
-
 export default Cocktails
