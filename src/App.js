@@ -8,28 +8,23 @@ import Provider from './state-provider/Provider';
 import { Container, Row } from 'react-bootstrap';
 import './App.css'
 
-const App = () => {
-
-  // const [state, dispatch] = useReducer(reducer, initialState)
-
-  return (
-    <div className="App">
-      <Provider>
-        <NavigationBar />
-        <Container>
-          <Row>
-            <Letters state={state} dispatch={asyncReducer(dispatch)} />
-          </Row>
-          <Row className="justify-content-center">
-            <SearchBar state={state} dispatch={asyncReducer(dispatch)} />
-          </Row>
-          <Row>
-            <Cocktails state={state} dispatch={dispatch} />
-          </Row>
-        </Container>
-      </Provider>
-    </div >
-  );
-}
+export const App = () => (
+  <div className="App">
+    <Provider>
+      <NavigationBar />
+      <Container>
+        <Row>
+          <Letters />
+        </Row>
+        <Row className="justify-content-center">
+          <SearchBar />
+        </Row>
+        <Row>
+          <Cocktails />
+        </Row>
+      </Container>
+    </Provider>
+  </div >
+)
 
 export default App;
