@@ -1,0 +1,10 @@
+@media only screen and (max-width: 600px) {
+    .responsive-body{
+
+    }
+
+    .responsive-img{
+        width: 155px !important;
+        height: fit-content !important;
+    }
+}

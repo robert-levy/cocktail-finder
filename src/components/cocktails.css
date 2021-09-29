@@ -1,0 +1,39 @@
+@media only screen and (max-width: 600px) {
+    .responsive-card{
+        width: min-content;
+    }
+
+    .responsive-img{
+        width: 150px !important;
+        /* height: fit-content !important; */
+    }
+
+    .responsive-btn{
+        width: 50px;
+        height: 20px;
+        font-size: 8px !important;
+        padding: 0 !important;
+    }
+
+    .responsive-text{
+        font-size: 8px;
+    }
+
+    .responsive-body{
+        width: fit-content;
+    }
+    
+    #responsive-title{
+        font-size: 14px;
+    }
+  }
+  @media only screen and (min-width: 600px) {
+    .responsive-body{
+        width: 300px;
+    }
+
+    .responsive-img{
+        width: 200px !important;
+        height: auto;
+    }
+  }

@@ -1,64 +1,11 @@
 import React, { useState } from 'react'
+import { useMediaQuery } from 'react-responsive';
 import { Card, Button } from 'react-bootstrap'
 import { Star, StarFill } from 'react-bootstrap-icons'
 import CocktailModal from './CocktailModal'
 import { getCocktailIngredients, getCocktails, checkIsFavourite, filterCocktails } from '../utility-functions'
 import { useCocktailDispatch, useCocktailState } from '../state-provider/Provider'
-
-const Cocktail = ({ cocktail }) => {
-    const { dispatch } = useCocktailDispatch()
-    const state = useCocktailState()
-    const [modalShow, setModalShow] = useState(false)
-    const [favourite, setFavourite] = useState(false)
-    const [ingredients, setIngredients] = useState('')
-
-    const handleFavouriteClick = () => {
-        dispatch({ type: 'favouriteToggle', payload: cocktail })
-        setFavourite(!favourite)
-    }
-
-    React.useEffect(() => {
-        const isFavourite = checkIsFavourite(state.cocktails.favourites, cocktail)
-        setFavourite(isFavourite)
-    }, [state.cocktails.favourites, state.selectedLetter, cocktail])
-
-    React.useEffect(() => {
-        const ingredients = getCocktailIngredients(cocktail)
-        setIngredients(ingredients)
-    }, [state.selectedLetter, cocktail])
-
-    return (
-        <>
-            <Card className="m-4" style={{ height: 200, flexDirection: 'row', width: '500px' }}>
-                <Card.Img variant="top" src={cocktail.strDrinkThumb} style={{ width: 200 }} />
-                <Card.Body className="d-flex flex-column justify-content-between">
-                    <Card.Title>{cocktail.strDrink}</Card.Title>
-                    <Card.Text>
-                        {ingredients}
-                    </Card.Text>
-                    <div className="d-flex justify-content-between">
-                        <Button onClick={() => setModalShow(true)} variant="warning">More info</Button>
-                        <Button variant="none" onClick={handleFavouriteClick}>
-                            {favourite ? <StarFill size={30} color="gold" />
-                                :
-                                <Star size={30} color="gold" />
-                            }
-                        </Button>
-                    </div>
-                </Card.Body>
-            </Card>
-            {modalShow &&
-                <CocktailModal
-                    size="lg"
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                    cocktail={cocktail}
-                    ingredients={ingredients}
-                />
-            }
-        </>
-    )
-}
+import './cocktails.css'
 
 const Cocktails = () => {
 
@@ -77,4 +24,63 @@ const Cocktails = () => {
         </div>
     )
 }
+
+const Cocktail = ({ cocktail }) => {
+    const { dispatch } = useCocktailDispatch()
+    const state = useCocktailState()
+    const [modalShow, setModalShow] = useState(false)
+    const [favourite, setFavourite] = useState(false)
+    const [ingredients, setIngredients] = useState('')
+    const isMobile = useMediaQuery({ query: `(max-width: 600px)` });
+
+    const handleFavouriteClick = () => {
+        dispatch({ type: 'favouriteToggle', payload: cocktail })
+        setFavourite(!favourite)
+    }
+
+    React.useEffect(() => {
+        const isFavourite = checkIsFavourite(state.cocktails.favourites, cocktail)
+        setFavourite(isFavourite)
+    }, [state.cocktails.favourites, state.selectedLetter, cocktail])
+
+    React.useEffect(() => {
+        const ingredients = getCocktailIngredients(cocktail)
+        setIngredients(ingredients)
+    }, [state.selectedLetter, cocktail])
+
+    return (
+        <>
+            <Card className={isMobile ? "m-1 d-flex flex-cloumn responsive-card" : "d-flex flex-row m-4"} >
+                <Card.Img className="responsive-img img-fluid" variant="top" src={cocktail.strDrinkThumb} />
+                <Card.Body className={isMobile
+                    ? "d-flex flex-column justify-content-between "
+                    : "d-flex flex-column justify-content-between responsive-body"}>
+                    <Card.Title id="responsive-title">{cocktail.strDrink}</Card.Title>
+                    <Card.Text className="responsive-text">
+                        {ingredients}
+                    </Card.Text>
+                    <div className="d-flex justify-content-between">
+                        <Button className="responsive-btn" onClick={() => setModalShow(true)} variant="warning" size={isMobile ? "small" : "large"}>More info</Button>
+                        <Button className="responsive-btn" variant="none" onClick={handleFavouriteClick}>
+                            {favourite ? <StarFill size={isMobile ? 20 : 30} color="gold" />
+                                :
+                                <Star size={isMobile ? 20 : 30} color="gold" />
+                            }
+                        </Button>
+                    </div>
+                </Card.Body>
+            </Card>
+            {modalShow &&
+                <CocktailModal
+                    size="lg"
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                    cocktail={cocktail}
+                    ingredients={ingredients}
+                />
+            }
+        </>
+    )
+}
+
 export default Cocktails

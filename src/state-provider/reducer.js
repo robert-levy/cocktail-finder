@@ -14,6 +14,7 @@ export const initialState = {
 export const reducer = (state, { type, payload }) => {
     let newState = {}
     let cocktails = []
+    if(!payload) return state
     switch (type) {
         case "letterSearch":
             cocktails = preProcessData(payload.drinks.drinks)

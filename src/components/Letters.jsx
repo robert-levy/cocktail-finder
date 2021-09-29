@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button } from 'react-bootstrap';
-import { containsCocktailData } from '../utility-functions';
 import { useCocktailDispatch, useCocktailState } from '../state-provider/Provider';
 
 const Letters = () => {
@@ -22,7 +21,7 @@ const Letter = ({ letter }) => {
 
     // Only makes API call if data is not already in state
     const handleClick = () => {
-        containsCocktailData(state, letter) ?
+        state.cocktails.searched[letter] ?
             dispatch({ type: 'changeSelectedLetter', payload: letter })
             : asyncReducer({ type: 'letterSearch', payload: letter })
     }

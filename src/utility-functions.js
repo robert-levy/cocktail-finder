@@ -14,9 +14,6 @@ export const getCocktails = (searched, selectedLetter) => {
     return cocktails
 }
 
-// checks if cocktail data for selected letter has already been fetched
-export const containsCocktailData = (state, letter) => state.cocktails.searched[letter]
-
 // checks if given cocktail is in favourites 
 export const checkIsFavourite = (favourites, cocktail) => favourites.some(favCocktail => favCocktail.idDrink === cocktail.idDrink)
 
