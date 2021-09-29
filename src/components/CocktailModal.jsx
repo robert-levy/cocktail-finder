@@ -38,11 +38,11 @@ const CocktailModal = ({ cocktail, ingredients, onHide, size, show }) => {
             </Modal.Header>
             <Modal.Body className={isMobile ? "show-grid responsive-body" : "show-grid"}>
                 <Container>
-                    <div className="d-flex">
+                    <div className={isMobile ? "d-flex flex-column align-items-center": "d-flex align-items-center"}>
                         <Image className="responsive-img" src={cocktail.strDrinkThumb} roundedCircle width="250" height="250" />
                         <Container className="d-flex flex-column justify-content-between">
                             <div>
-                                <div className="d-flex justify-content-between">
+                                <div className="d-flex justify-content-between align-items-center">
                                     <h5>Instructions</h5>
                                     <Button variant="none" onClick={handleFavouriteClick}>
                                         {favourite ? <StarFill size={30} color="gold" />
@@ -52,7 +52,7 @@ const CocktailModal = ({ cocktail, ingredients, onHide, size, show }) => {
                                     </Button>
                                 </div>
 
-                                {cocktail.strInstructions}
+                                <p>{cocktail.strInstructions}</p>
                             </div>
                             <div>
                                 <NavDropdown.Divider />
