@@ -12,11 +12,20 @@ const Cocktails = () => {
     const state = useCocktailState()
     const nonFilteredCocktails = getCocktails(state.cocktails.searched, state.selectedLetter)
     let cocktailsFiltered = filterCocktails(nonFilteredCocktails, state.searchTerm).map((cocktail, index) => <Cocktail cocktail={cocktail} key={index} />)
-
+    // cases: filtering with search term / no cocktails exist for letter in first place
     return (
         <div className="d-flex flex-wrap justify-content-around bg-light ">
             {!state.selectedLetter && <div><h5>Select a letter to search for cocktails</h5></div>}
-            {state.selectedLetter && cocktailsFiltered.length === 0 && <div><h5>Could not find any cocktails starting with {state.selectedLetter}</h5></div>}
+
+            {state.selectedLetter && cocktailsFiltered.length === 0 && !state.searchTerm
+                && <div><h5>Could not find any cocktails starting with {state.selectedLetter}</h5></div>
+            }
+
+            {state.selectedLetter && cocktailsFiltered.length === 0 && state.searchTerm
+                && <div><h5>Could not find any cocktails with {state.searchTerm}</h5></div>
+            }
+
+
             {
                 cocktailsFiltered.map(cocktail => cocktail)
             }

@@ -20,8 +20,10 @@ const SearchBar = () => {
     }
 
     const handleSearchTermChange = (e) => {
-        dispatch({type:'newSearchTerm', payload:e.target.value})
-        setSearchTerm(e.target.value)
+        console.log(e.target.value)
+        dispatch({ type: 'newSearchTerm', payload: e.target.value }) //this doesn't set search term to "", it keeps the fist letter
+        setSearchTerm(e.target.value) 
+
     }
 
     return (
@@ -39,7 +41,7 @@ const SearchBar = () => {
                     aria-describedby="inputGroup-sizing-default"
                     placeholder="🍹...🍸...🥴"
                     value={searchTerm}
-                    onChange={(e) =>handleSearchTermChange(e)}
+                    onChange={(e) => handleSearchTermChange(e)}
 
                 />
             </InputGroup>

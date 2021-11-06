@@ -14,7 +14,7 @@ export const initialState = {
 export const reducer = (state, { type, payload }) => {
     let newState = {}
     let cocktails = []
-    if(!payload) return state
+    // if(!payload) return state // why is this here, had to comment out to allow searchTerm to equal ""?
     switch (type) {
         case "letterSearch":
             cocktails = preProcessData(payload.drinks.drinks)
@@ -84,7 +84,7 @@ export const asyncReducer = dispatch => {
                 break
 
             case "randomSearch":
-                const drink = await fetchRandomDrink() //sometimes this returns undefined
+                const drink = await fetchRandomDrink()
                 payload = drink
                 dispatch({ type, payload })
                 break
