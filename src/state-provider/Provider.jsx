@@ -7,7 +7,7 @@ export const DispatchContext = React.createContext();
 export const useCocktailState = () => {
     const context = useContext(StateContext)
     if (context === undefined) {
-        throw new Error(`useState must be used within a Provider`);
+        throw new Error(`useCocktailState must be used within a Provider`);
     }
     return context;
 }
