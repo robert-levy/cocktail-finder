@@ -4,11 +4,7 @@ import Adapter from 'enzyme-adapter-react-16'
 import SearchBar from './SearchBar'
 
 Enzyme.configure({adapter: new Adapter()})
-jest.mock('../state-provider/Provider', (() => ({
-    __Provider: true, // this property makes it work
-    useCocktailState:jest.fn(),
-    useCocktailDispatch: jest.fn()
-})))
+jest.mock('../state-provider/Provider')
 
 describe('SearchBar.jsx', () => {
     it('should show search bar', () => {
